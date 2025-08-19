@@ -26,15 +26,17 @@
     import com.example.sleepphase.R
     import com.example.sleepphase.presentation.theme.SleepPhaseTheme
     import android.util.Log
-    import androidx.compose.foundation.border
     import androidx.compose.foundation.layout.Arrangement
     import androidx.compose.foundation.layout.Column
     import androidx.compose.foundation.layout.Spacer
     import androidx.compose.foundation.layout.height
+    import androidx.compose.runtime.MutableState
+    import androidx.compose.runtime.mutableStateOf
+    import androidx.compose.runtime.remember
     import androidx.compose.ui.graphics.Color
     import androidx.compose.ui.unit.dp
-    import org.checkerframework.common.subtyping.qual.Bottom
     import androidx.wear.compose.material.Button
+    import androidx.wear.protolayout.material.ButtonDefaults
 
 
     class MainActivity : ComponentActivity() {
@@ -46,14 +48,16 @@
 
             setTheme(android.R.style.Theme_DeviceDefault)// setting initial design settings
             setContent {
-                TestMessage("Hyy")
+                var counter = remember { mutableStateOf(0) }
+
+                TestMessage(counter)
                 /*WearApp("Android")*/
             }
         }
     }
 
     @Composable
-    fun TestMessage(msg: String){
+    fun TestMessage(msg: MutableState<Int>){
     SleepPhaseTheme {
         Box(
             modifier = Modifier
@@ -63,21 +67,26 @@
         ) {
             Column(
                 modifier = Modifier.fillMaxSize()
-                        .background(Color.Blue),
+                        .background(Color.White),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-
             ){
-                TimeText()
                 Text(
-                    text = "Welcome to my app :)",
-                    color = Color.Blue
+                    text = "Welcome to my app :)\n clicking counter: ${msg.value}",
+                    color = Color.Green
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = {
-                    Log.d("MyApp", "Button clicked!")
+                Button(
+                    onClick = {
+                    Log.d("MyApp", "Button clicked!!!")
+                    msg.value++
+
                 }) {
-                    Text("Click here")
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "Click"
+
+                    )
                 }
             }
 
